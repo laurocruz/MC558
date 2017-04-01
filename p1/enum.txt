@@ -1,0 +1,60 @@
+Planilha Eletrônica
+
+"Planilha eletrônica [...] é um tipo de programa de computador que utiliza tabelas para realização de cálculos ou apresentação de dados." (Fonte: Wikipedia) Exemplos de planilhas eletrônicas são o Microsoft Excel, o LibreOffice Calc e o Google Spreadsheet.
+
+Uma planilha contém vários campos organizados em formato de tabela. Um campo é identificado por uma sequência de letras, que indica uma coluna, e uma sequência de dígitos, que indica uma linha. Cada campo contém um dado; neste exercício vamos supor que todos os dados são números. Um dado pode ser um valor constante ou um número calculado através de uma fórmula. Uma fórmula pode fazer cálculos utilizando referências a outros campos.
+
+Por exemplo, suponha uma planilha com 3 campos, A1, A2 e A3, com os seguintes dados:
+    A1 = 4
+    A2 = 5
+    A3 = A1 + A2
+Os campos A1 e A2 contêm valores constantes, e o campo A3 contém uma fórmula que referencia os campos A1 e A2.
+
+Este exemplo é bastante simples mas, quando uma planilha tem várias fórmulas, um cuidado a ser tomado é verificar se não existem referências circulares. Por exemplo, na planilha a seguir os campos A2 e A3 formam uma referência circular:
+    A1 = 2
+    A2 = A1 + A3
+    A3 = A1 + A2
+Neste caso, o valor dos campos fica indefinido e o programa deve exibir uma mensagem de erro.
+
+Além disso, para planilhas muito grandes, performance é um requisito importante. Idealmente, nenhum dado deve ser calculado mais de uma vez.
+
+Neste exercício você deve calcular o valor de cada campo de uma planilha de forma eficiente, estabelecendo uma ordem em que cada fórmula deve ser calculada, além de identificar eventuais referências circulares. Para simplificar a leitura da entrada, vamos supor que a planilha possui uma única coluna A, e que todas as fórmulas são somas.
+
+Entrada: na primeira linha da entrada é dado um inteiro n, que indica o número de campos da planilha. Você pode supor que 0 ≤ n ≤ 10^5.
+A seguir são dadas n linhas, indicando o conteúdo dos campos A1, A2, ..., An. Um campo pode ser um valor constante em formato decimal ([0-9]+ em notação POSIX de expressões regulares), ou um ou mais campos separados pelo sinal '+'. Um campo é especificado pela letra A seguida de um ou mais dígitos decimais, sendo que o primeiro dígito não é zero (A[1-9][0-9]* em notação POSIX de expressões regulares). Você pode supor que cada campo aparece no máximo uma vez em cada fórmula, e que o valor final de um campo sempre será um inteiro não-negativo menor que 2^31.
+
+Saída: n linhas, indicando o valor dos campos A1, A2, ..., An.
+Caso haja alguma referência circular, você deve imprimir uma única linha com a seguinte mensagem: "Erro! Referencia circular."
+
+Exemplos:
+Entrada:
+4
+4
+5
+A1+A2
+A3
+Saída:
+4
+5
+9
+9
+
+Entrada:
+3
+2
+A1+A3
+A2+A1
+Saída:
+Erro! Referencia circular.
+
+Observações:
+Você deve obrigatoriamente modelar o problema utilizando grafos.
+Você deve implementar estruturas de dados eficientes, com consumo de memória O(n + m), onde m é o número de referências a outros campos em fórmulas.
+Seu algoritmo deve executar em tempo O(n + m). Lembre-se que alocação de memória (mesmo memória estática alocada na pilha) influi na complexidade de tempo.
+A nota do exercício é proporcional ao número de casos de teste que você acertar; são dados 10 casos de teste, sendo 6 abertos e 4 fechados, valendo 1 ponto cada.
+No entanto, implementações com complexidade de memória ou tempo fora do especificado receberão nota zero no exercício.
+Isto poderá ser verificado através de casos de teste fechados adicionais, com tamanho de entrada maior, executados fora do SuSy pelo monitor.
+Você pode utilizar as bibliotecas-padrão do C e as estruturas de dados da biblioteca-padrão do C++.
+Trechos de código copiados da Internet ou dx coleguinha configuram plágio.
+Sugerimos que você use scanf para fazer a leitura da entrada, a fim de garantir que seu código execute no tempo especificado.
+Seu código deve estar identado, modularizado e bem comentado. Identifique-se e deixe claro quais estruturas de dados e algoritmos foram utilizados.
