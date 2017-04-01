@@ -54,3 +54,5 @@ do
 	fi
 	echo
 done
+
+make clean

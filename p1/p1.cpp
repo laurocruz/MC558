@@ -1,3 +1,6 @@
+// Lauro Cruz e Souza - 156175
+// lauro.souza@students.ic.unicamp.br | laurocruzsouza@gmail.com
+
 #include <iostream>
 #include <vector>
 #include <stack>
@@ -5,21 +8,33 @@
 
 using namespace std;
 
+// Classe que define o grafo que representa a planilha eletrônica
 class Sheet {
+        // Tipo de estado de cada vértice do grafo durante DFS (resolveSheet)
         typedef enum {white, gray, black} node_color;
+        // Estrutura de cada vértice no grafo (lista de adjacência)
         struct sheet_node {
-            int value;
-            vector<int> refs;
+            int value; // Valor do nó
+            vector<int> refs; // Nós utilizados na equação deste nó
 
         };
-        int n;
-        vector<struct sheet_node> *vertex;
-        int sumRefs(int v);
+        // Número de vértices
+        int n;        
+        // Lista de adjacência
+        vector<struct sheet_node> *vertex; 
+        // Soma os valores dos vértices referenciados pelo vértice v
+        int sumRefs(int v); 
     public:
-        Sheet(int n);
-        void setVertexVal(int v, int val);
+        // Csnstrutor
+        Sheet(int n); 
+        // Define o valor do vérrtice v
+        void setVertexVal(int v, int val); 
+        // Obtém o valor do vértice v
         int getVertexVal(int v);
+        // Cria aresta adder -> addee
         void addRef(int adder, int addee);
+        // Realiza o DFS que obtem os valores das equações dos nós e encontra referências circulares
+        // true se não há referência circular, false caso contrário
         bool resolveSheet();
         
 };
@@ -57,25 +72,33 @@ bool Sheet::resolveSheet() {
 
     for (int i = 0; i < n; i++) color[i] = white;
 
+    // DFS
     for (int i = 0; i < n; i++) {
         if (color[i] == white) {
             v = i;
             do {
-                //cout << "INN: Vértice: " << v << " ||| Stack size = " << S.size() << endl;
                 if (color[v] == white) {
+                    // Adiciona nó da pilha e so o retira após percorrer todos os descedentes
                     color[v] = gray;
                     S.push(v);
                     vector<int>::iterator it;
                     for(it = (*vertex)[v].refs.begin(); it != (*vertex)[v].refs.end(); it++) {
+                        // Se o nó já está na pilha ocorreu referência circular
                         if (color[*it] == gray) return false;
+                        // Adiciona os filhos ainda não visitados
                         else if (color[*it] == white) S.push(*it);
                     }
                 } else {
+                    // Retira o nó da pilha pois já percorreu todos seus descendentes
                     color[v] = black;
+                    // Obtem o valor do nó formado por uma equacao
                     if (!(*vertex)[v].refs.empty()) 
                         (*vertex)[v].value = sumRefs(v);
                     S.pop();
                 }
+                // Se a pilha não está vazia, realiza o S.top, que com +1 sempre será verdadeiro
+                // Se a pilha está vazia, não realiza o S.top, evitando tentar obter o valor da
+                // pilha vazia
             } while (!S.empty() && (v = S.top())+1 );
         }
     }
@@ -93,6 +116,7 @@ int main() {
         if (scanf("%d", &value)) {
             G.setVertexVal(i,value);
         } else {
+            // Obtem valores referenciados pela equação e cria as arestas no grafo
             do {
                 scanf("A%d%c", &v, &c);
                 G.addRef(i,v-1);
