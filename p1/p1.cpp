@@ -12,27 +12,34 @@ using namespace std;
 class Sheet {
         // Tipo de estado de cada vértice do grafo durante DFS (resolveSheet)
         typedef enum {white, gray, black} node_color;
+
         // Estrutura de cada vértice no grafo (lista de adjacência)
         struct sheet_node {
             int value; // Valor do nó
             vector<int> refs; // Nós utilizados na equação deste nó
-
         };
+
         // Número de vértices
         int n;        
+
         // Lista de adjacência
         vector<struct sheet_node> *vertex; 
+
         // Soma os valores dos vértices referenciados pelo vértice v
         int sumRefs(int v); 
     public:
         // Csnstrutor
         Sheet(int n); 
+
         // Define o valor do vérrtice v
         void setVertexVal(int v, int val); 
+
         // Obtém o valor do vértice v
         int getVertexVal(int v);
+
         // Cria aresta adder -> addee
         void addRef(int adder, int addee);
+
         // Realiza o DFS que obtem os valores das equações dos nós e encontra referências circulares
         // true se não há referência circular, false caso contrário
         bool resolveSheet();
