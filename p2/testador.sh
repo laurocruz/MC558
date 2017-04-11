@@ -26,7 +26,7 @@ echo $turma
 make
 mkdir  testes
 
-for i in {1..6}
+for i in {0..6}
 do
 	if ! [ -f testes/arq$i.res ]; then
 		cd testes

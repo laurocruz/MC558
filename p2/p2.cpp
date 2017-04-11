@@ -107,6 +107,16 @@ int Graph::removeFerrovias() {
         Q.insert(make_pair(d[i],i));
     }
 
+    /*
+    if (this->n < 100) {
+        set< pair<int,int> >::iterator is;
+        for (is = Q.begin(); is != Q.end(); is++) {
+            cout << (*is).second+1 << ": " << (*is).first << endl;
+        }
+        cout << endl;
+    }
+    */
+
     while (!Q.empty()) {
         // u - Vertice a ser avaliado
         u = (*(Q.begin())).second;
@@ -129,28 +139,30 @@ int Graph::removeFerrovias() {
             int c = (*it).peso;
 
             // relax
-            if (d[v] > d[u] + c) {
-                // Atualiza distância
-                if (inQ[v])
-                    Q.erase(Q.find(make_pair(d[v],v)));
+            if (!(*vertex)[v].capital) {
+                if (d[v] > d[u] + c) {
+                    // Atualiza distância
+                    if (inQ[v])
+                        Q.erase(Q.find(make_pair(d[v],v)));
 
-                d[v] = d[u] + c;
-                n_fers[v] = n_fers[u];
-                pi[v].first = u;
-                pi[v].second = false;
+                    d[v] = d[u] + c;
+                    n_fers[v] = n_fers[u];
+                    pi[v].first = u;
+                    pi[v].second = false;
 
-                Q.insert(make_pair(d[v],v));
-                inQ[v] = true;
-
-            } else if ((d[v] == d[u] + c) && (n_fers[v] > n_fers[u])) {
-                if (!inQ[v]) {
                     Q.insert(make_pair(d[v],v));
                     inQ[v] = true;
-                }
 
-                n_fers[v] = n_fers[u];
-                pi[v].first = u;
-                pi[v].second = false;
+                } else if ((d[v] == d[u] + c) && (n_fers[v] > n_fers[u])) {
+                    if (!inQ[v]) {
+                        Q.insert(make_pair(d[v],v));
+                        inQ[v] = true;
+                    }
+
+                    n_fers[v] = n_fers[u];
+                    pi[v].first = u;
+                    pi[v].second = false;
+                }
             }
         }
 
@@ -162,31 +174,43 @@ int Graph::removeFerrovias() {
 
             // relax
 
-            if (d[v] > d[u] + c) {
-                // Atualiza distância
-                if (inQ[v])
-                    Q.erase(Q.find(make_pair(d[v],v)));
+            if (!(*vertex)[v].capital) {
+                if (d[v] > d[u] + c) {
+                    // Atualiza distância
+                    if (inQ[v])
+                        Q.erase(Q.find(make_pair(d[v],v)));
 
-                d[v] = d[u] + c;
-                n_fers[v] = n_fers[u] + 1;
-                pi[v].first = u;
-                pi[v].second = true;
+                    d[v] = d[u] + c;
+                    n_fers[v] = n_fers[u] + 1;
+                    pi[v].first = u;
+                    pi[v].second = true;
 
-                Q.insert(make_pair(d[v],v));
-                inQ[v] = true;
-
-            } else if ((d[v] == d[u] + c) && (n_fers[v] > n_fers[u] + 1)) {
-                if (!inQ[v]) {
                     Q.insert(make_pair(d[v],v));
                     inQ[v] = true;
+
+                } else if ((d[v] == d[u] + c) && (n_fers[v] > n_fers[u] + 1)) {
+                    if (!inQ[v]) {
+                        Q.insert(make_pair(d[v],v));
+                        inQ[v] = true;
+                    }
+
+                    n_fers[v] = n_fers[u] + 1;
+                    pi[v].first = u;
+                    pi[v].second = true;
+
                 }
-
-                n_fers[v] = n_fers[u] + 1;
-                pi[v].first = u;
-                pi[v].second = true;
-
             }
         }
+        /*
+        if (this->n < 100) {
+            set< pair<int,int> >::iterator is;
+            for (is = Q.begin(); is != Q.end(); is++) {
+                cout << (*is).second+1 << ": " << (*is).first << endl;
+            }
+            cout << endl;
+        }
+        */
+
     }
 
     for (int i = 0; i < n; i++) {
