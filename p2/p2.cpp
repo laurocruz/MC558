@@ -100,10 +100,12 @@ int Graph::removeFerrovias() {
     // Define se vertice está ou não na fila
     vector< bool > inQ(this->n, true);
 
-    // Dimimui valor das capitais para, quando tudo for infinito, estarao no começo da fila
+    // Distancias das capitais são zeradas, como se houvesse uma capital superior ligando 
+    // todas elas com estrada de distancia 0, e a usando de raiz
     for (int i = 0; i < this->n; i++) {
-        if ((*vertex)[i].capital)
-            d[i]--;
+        if ((*vertex)[i].capital) {
+            d[i] = 0;
+        }
         Q.insert(make_pair(d[i],i));
     }
 
@@ -123,14 +125,6 @@ int Graph::removeFerrovias() {
         Q.erase(Q.begin());
         inQ[u] = false;
 
-        // Nova capital
-        if ((*vertex)[u].capital) {
-            d[u] = 0;
-            n_fers[u] = 0;
-            pi[u].first = -1;
-            pi[u].second = false;
-        }
-
         // Avalia estradas
         vector<struct edge>::iterator it;
         for (it = (*vertex)[u].estradas.begin(); it != (*vertex)[u].estradas.end(); it++) {
@@ -139,30 +133,28 @@ int Graph::removeFerrovias() {
             int c = (*it).peso;
 
             // relax
-            if (!(*vertex)[v].capital) {
-                if (d[v] > d[u] + c) {
-                    // Atualiza distância
-                    if (inQ[v])
-                        Q.erase(Q.find(make_pair(d[v],v)));
+            if (d[v] > d[u] + c) {
+                // Atualiza distância
+                if (inQ[v])
+                    Q.erase(Q.find(make_pair(d[v],v)));
 
-                    d[v] = d[u] + c;
-                    n_fers[v] = n_fers[u];
-                    pi[v].first = u;
-                    pi[v].second = false;
+                d[v] = d[u] + c;
+                n_fers[v] = n_fers[u];
+                pi[v].first = u;
+                pi[v].second = false;
 
+                Q.insert(make_pair(d[v],v));
+                inQ[v] = true;
+
+            } else if ((d[v] == d[u] + c) && (n_fers[v] > n_fers[u])) {
+                if (!inQ[v]) {
                     Q.insert(make_pair(d[v],v));
                     inQ[v] = true;
-
-                } else if ((d[v] == d[u] + c) && (n_fers[v] > n_fers[u])) {
-                    if (!inQ[v]) {
-                        Q.insert(make_pair(d[v],v));
-                        inQ[v] = true;
-                    }
-
-                    n_fers[v] = n_fers[u];
-                    pi[v].first = u;
-                    pi[v].second = false;
                 }
+
+                n_fers[v] = n_fers[u];
+                pi[v].first = u;
+                pi[v].second = false;
             }
         }
 
@@ -174,31 +166,29 @@ int Graph::removeFerrovias() {
 
             // relax
 
-            if (!(*vertex)[v].capital) {
-                if (d[v] > d[u] + c) {
-                    // Atualiza distância
-                    if (inQ[v])
-                        Q.erase(Q.find(make_pair(d[v],v)));
+            if (d[v] > d[u] + c) {
+                // Atualiza distância
+                if (inQ[v])
+                    Q.erase(Q.find(make_pair(d[v],v)));
 
-                    d[v] = d[u] + c;
-                    n_fers[v] = n_fers[u] + 1;
-                    pi[v].first = u;
-                    pi[v].second = true;
+                d[v] = d[u] + c;
+                n_fers[v] = n_fers[u] + 1;
+                pi[v].first = u;
+                pi[v].second = true;
 
+                Q.insert(make_pair(d[v],v));
+                inQ[v] = true;
+
+            } else if ((d[v] == d[u] + c) && (n_fers[v] > n_fers[u] + 1)) {
+                if (!inQ[v]) {
                     Q.insert(make_pair(d[v],v));
                     inQ[v] = true;
-
-                } else if ((d[v] == d[u] + c) && (n_fers[v] > n_fers[u] + 1)) {
-                    if (!inQ[v]) {
-                        Q.insert(make_pair(d[v],v));
-                        inQ[v] = true;
-                    }
-
-                    n_fers[v] = n_fers[u] + 1;
-                    pi[v].first = u;
-                    pi[v].second = true;
-
                 }
+
+                n_fers[v] = n_fers[u] + 1;
+                pi[v].first = u;
+                pi[v].second = true;
+
             }
         }
         /*
