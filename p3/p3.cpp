@@ -1,11 +1,11 @@
 // Lauro Cruz e Souza - 156175
 // lauro.souza@students.ic.unicamp.br | laurocruzsouza@gmail.com
 
-/* O problema descrito pode ser resolvido encontrado a árvore geradora mínima dos
+/* O problema descrito pode ser resolvido encontrando a árvore geradora mínima dos
  * distritos, ligados por arestas que representam os possíveis encanamentos entre estes
  * distritos. Para representar os custos da construção de reservatórios nos distritos, 
  * podemos pensar que existe um único distrito superior que será o único a possuir um 
- * reservatório com custo nulo e pode-se construir encanamentos entre este distrito e
+ * reservatório, com custo 0, e que pode-se construir encanamentos entre este distrito e
  * todos os outros, sendo seus custos o custo de construir um reservatório no distrito
  * inferior.
  *
@@ -15,11 +15,13 @@
  * no vértice superior.
  *
  * A partir daí podemos apenas continuar a aplicar o algortimo de Prim e obteremos a
- * árvore mínima, com o vértice global imaginário como a raiz.
+ * árvore mínima, com o vértice global imaginário como a raiz (ou seja, na prática teremos
+ * uma floresta com todos os vértices em que acontece a construção de um reservatório como
+ * as raízes das árvores)
  *
  * A partir daí, obtemos o custo total sumando os valores das keys, que representam os valores
- * de todas as arestas presentes na árvore (ou o custo de construção do reservatórios, sendo 
- * assim um aresta que se liga no vértice superior imaginário).
+ * de todas as arestas presentes na árvore (ou o custo de construção do reservatórios, ou seja, 
+ * a aresta que se liga no vértice superior imaginário).
  */
 
 #include <iostream>
@@ -118,7 +120,7 @@ int Graph::Prim() {
         inQ[u] = false;
 
         // Avalia vértices adjacentes
-        // Basicamente aplica o algoritmo de Prim padrão
+        // Continua a aplicar o algoritmo de Prim padrão
         vector< pair<int,int> >::iterator it;
         for (it = (*vertex)[u].e.begin(); it != (*vertex)[u].e.end(); it++) {
             int v = (*it).first;
@@ -127,7 +129,7 @@ int Graph::Prim() {
             // Se o vértice adjacente está na fila de prioridade e a aresta ligada a ele é mais
             // custosa que a avaliada
             if (inQ[v] && w < key[v]) {
-                // Atualiza sues valores no vetor de na fila
+                // Atualiza seus valores no vetor e na fila
                 Q.erase(Q.find(make_pair(key[v],v)));
                 key[v] = w;
                 Q.insert(make_pair(key[v],v));
