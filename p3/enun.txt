@@ -1,0 +1,55 @@
+MC558A - Projeto e Análise de Algoritmos II
+
+Lehilton Pedrosa
+Murilo de Lima (PED C)
+Exercício de Programação III
+
+    Prazo de submissão: 7 de maio às 23:59:59
+    O exercício deve ser implementado em C ou C++
+    Número máximo de submissões: 10
+    Tempo máximo de execução: 10s
+
+Água para Todos
+
+A presidenta Milda precisa novamente da sua ajuda. Desta vez, Milda está implantando um programa social de distribuição de água em regiões de zona rural do país B. No entanto, devido a uma crise no sistema econômico que afeta todo o planeta Chão, no qual se encontra o país B, a presidenta precisa otimizar os custos de implantação desse programa, e contratou você para auxiliar no planejamento.
+
+Cada munícipio do país B é dividido em distritos. Existe a possibilidade de instalar um reservatório de água em cada distrito, e existe a possibilidade de interligar um distrito a outro através de um encanamento. Um distrito terá fornecimento de água se possuir um reservatório, ou se estiver interligado por encanamentos a um distrito que tenha fornecimento de água.
+
+No entanto, o custo de instalar um reservatório varia de uma cidade para outra, devido às características geográficas de cada distrito e a questões de logística. Além disso, pelos mesmos motivos, nem sempre é possível interligar todos os pares de distritos por encanamentos. Seu objetivo é decidir quais reservatórios e quais encanamentos instalar, de forma que o custo de construir uma infraestrutura que forneça água a todos os distritos seja mínimo.
+
+Entrada: na primeira linha da entrada são dados dois inteiros n e m; n indica o número de distritos. Os distritos são numerados de 1 a n. Você pode supor que 1 ≤ n ≤ 10^5 e que 0 ≤ m ≤ 10^6.
+A seguir são dadas n linhas; cada linha contém um único número r, que indica o custo de instalar um reservatório no distrito correspondente. Você pode supor que 1 ≤ r ≤ 10^3.
+A seguir são dadas m linhas. Cada linha contém três números i, j e c, com i ≠ j e 1 ≤ c ≤ 10^3, indicando que é possível instalar um encanamento entre os distritos i e j com custo c.
+
+Saída: uma única linha com o custo total mínimo para construir a infraestrutura de fornecimento de água do município dado.
+Exemplo:
+Entrada:
+3 3
+1
+3
+5
+1 2 2
+2 3 1
+1 3 2
+Saída:
+4
+(Uma solução ótima consiste em instalar um reservatório na cidade 1 e instalar encamentos entres as cidades 1 e 2 e entre as cidades 2 e 3.)
+
+Relatório: você deve incluir, no cabeçalho do arquivo do seu código, um comentário com 100 a 300 palavras, explicando sua solução. Não é necessário fazer uma prova formal, mas você deve argumentar por que sua solução funciona.
+Sugestão: escreva o relatório antes de implementar o código; isso vai te ajudar a pensar melhor no problema. Após concluir a implementação, revise o relatório para checar se algo precisa ser modificado.
+Observações:
+
+    O SuSy utiliza o GCC 4.4.7 20120313 (Red Hat 4.4.7-17). São utilizadas as seguintes flags para compilação:
+        C99: -std=c99 -pedantic -Wall -lm
+        ANSI C: -ansi -pedantic -Wall -lm
+        C++: -ansi -pedantic -Wall -lm
+    Você deve implementar estruturas de dados eficientes, com consumo de memória O(n + m).
+    Seu algoritmo deve executar em tempo O((n + m) log n). Lembre-se que alocação de memória (mesmo memória estática alocada na pilha) influi na complexidade de tempo.
+    A nota do exercício é proporcional ao número de casos de teste que você acertar; são dados 10 casos de teste, sendo 7 abertos e 3 fechados, valendo 1 ponto cada.
+    No entanto, implementações com complexidade de memória ou tempo fora do especificado receberão nota zero no exercício.
+    Isto poderá ser verificado através de casos de teste fechados adicionais, com tamanho de entrada maior, executados fora do SuSy pelo monitor.
+    Você pode utilizar as bibliotecas-padrão do C e as estruturas de dados da biblioteca-padrão do C++.
+    Trechos de código copiados da Internet ou dx coleguinha configuram plágio.
+    Sugerimos que você use scanf para fazer a leitura da entrada, a fim de garantir que seu código execute no tempo especificado.
+    Seu código deve estar identado, modularizado e bem comentado. Identifique-se e deixe claro quais estruturas de dados e algoritmos foram utilizados.
+
