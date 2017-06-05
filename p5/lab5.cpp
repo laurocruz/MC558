@@ -1,6 +1,39 @@
 // Lauro Cruz e Souza - 156175
 // laurocruzsouza@gmail.com | lauro.souza@students.ic.unicamp.br
 
+/* O problema da reorganização de matriz do laboratório é resolvida utilizando
+ * como caixa preta o algoritmo de Edmonds-Karp para encontrar o fluxo máximo
+ * de um grafo de fluxos.
+ *
+ * O objetivo é descobrir se com trocas de linhas e colunas da matriz podemos
+ * obter uma matriz com a diagonal principal composta inteiramente de 1's. 
+ * Assim, para a matriz entrada NxN, inicialmente é construido com grafo 
+ * direcionado com 2N vértices, sendo esses divididos em dois sub-conjuntos:
+ * A = {1,2,..,N} e B = {1+N,2+N,..,2N}. Assim, um número 1 na posição M_{l,c} 
+ * forma no grafo uma aresta (l,c+N), ou seja, toda aresta está entre A e B e 
+ * liga a linha da aresta à coluna da aresta. A ideia desta transformação é que
+ * o número 1 está na linha l, mas quer passar para a linha c, mesmo valor de
+ * sua coluna, e assim fará parte da diagonal principal.
+ *
+ * É simples de perceber acima que criamos um grafo bipartido. Agora, o que
+ * queremos é encontrar um emparelhamento máximo neste grafo, e se este for
+ * igual a N, então a matriz é reorganizável. Isso é verdade pois significa que 
+ * os valores de 1 podem todos ser trocados de linha/coluna de forma que tenhamos
+ * N valores 1 na diagonal principal sem conflito, ou seja, a reorganização da 
+ * matriz é possível.
+ *
+ * O problema do emparelhamento máximo de um grafo bipartido, por sua vez, pode
+ * ser resolvido utilizando o algoritmo de Edmonds-Karp, como foi explicado em 
+ * aula. Para utilizá-lo, definimos que todas as arestas entre A e B possuem 
+ * capacidade 1 e criamos dois novos vértices, uma fonte (S) e um terminal (T).
+ * S se liga a todos os vértices de A com arestas de capacidade 1 e T é ligado
+ * por todos os vértices de B com arestas de capacidade 1. Como todas as arestas
+ * tem capacidade 1, não é possível duas arestas serem utilizadas saindo ou entrando
+ * de um vértice, pois só é possível um fluxo 1 saindo e entrando nele. Assim, se 
+ * temos fluxo máximo X, X arestas sem vértices em comum são utilizadas entre A e B, 
+ * e temos assim um emparelhamento de tamanho X.
+ */
+
 #include <iostream>
 #include <cstdio>
 #include <climits>
@@ -103,7 +136,6 @@ void Graph::printGraph() {
 
 void Graph::Residual_Path(int s, int t, vector<int> & path, int & min_c) {
     queue <int> Q;
-    //vector<int> d(this->n, INT_MAX);
     vector<int> pi_e(this->n, INT_MAX);
     vector<bool> visited(this->n, false);
     int u, v, c, f, i;
