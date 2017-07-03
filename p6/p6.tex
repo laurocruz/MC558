@@ -1,0 +1,135 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{breqn}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[margin=0.1in]{geometry}
+
+\title{MC558 - P6}
+\author{Lauro Cruz e Souza - 156175 }
+\date{June 2017}
+
+\begin{document}
+
+\maketitle
+
+\section{Variáveis:}
+
+Para $ i \in \{1,...,13\} $:
+
+$ x[i] $ = Rendimento no mês $i$
+
+$ CC[i] $ = Conta corrente no mês $i$
+
+$ P[i] $  = Poupança no mês $i$
+
+$ CDB[i] $ = CDB no mês $i$
+
+$ AC[i] $ = Dinheiro investido em acões no mês $i$\\
+
+Para $ i \in \{1,...,12\} $:
+
+$ retP[i] = $ Quantidade de dinheiro a ser retirado da poupança no mês $i+1$
+
+$ retCDB[i] = $ Quantidade de dinheiro a ser retirado do CDB no mês $i+1$
+
+$ retAC[i] = $ Quantidade de dinheiro a ser retirado das ações no mês $i+1$
+
+$ invP[i] = $ Quantidade de dinheiro a ser investido na poupança no mês $i$
+
+$ invCDB[i] = $ Quantidade de dinheiro a ser investido no CDB no mês $i$
+
+$ invAC[i] = $ Quantidade de dinheiro a ser investido em ações no mês $i$ \\\\
+
+\section{Maximização:}
+$$ h + \sum_{i=1}^{13} x[i] $$
+
+O total de dinheiro inicialmente (herança $h$) mais o rendimento de cada um dos meses do ano (e janeiro de 2019) é o total de dinheiro final, ou seja, queremos maximizar o total de dinheiro ao final de um ano.\\
+
+\section{Restrições:}
+
+\textbf{O rendimento inicial é sempre negativo:}
+
+$ x[0] = -d[0] $
+
+\textbf{Os proximos rendimentos são calculados pela quantidade de dinheiro atual menos a do mês anterior:}
+
+$ x[i] = CC[i] + P[i] + CDB[i] + AC[i] - CC[i-1] - P[i-1] - CDB[i-1] - AC[i-1]$ $\forall i \in \{2,..,13\} $ \\
+
+
+\textbf{O rendimento precisa ser maior que o negativo da quantidade de dinheiro disponível para não termos saldo negativo:}
+
+$ x[0] \geq -h $
+
+$ x[i] \geq -(CC[i-1] + P[i-1] + CDB[i-1] + AC[i-1]) $ $\forall i \in \{2,...,13\}$\\
+
+
+\textbf{A conta corrente inicial é a herança menos os investimentos iniciais:}
+
+$ CC[0] = h - invP[0] - invCDB[0] - invAC[0] - d[0] $
+
+\textbf{Para o resto, a conta corrente é o saldo do mês anterior mais a quantidade retirada dos investimentos, menos a quantidade investida e as tarifas:}
+
+$ CC[i] = CC[i-1] + retP[i-1] + retCDB[i-1] + retAC[i-1] - invP[i] - invCDB[i] - invAC[i] - c - d[i]$ $\forall i \in \{2,..,13\}$\\
+
+
+\textbf{O saldo inicial da poupança é a quantidade investida:}
+
+$ P[0] = invP[0] $
+
+\textbf{O resto é o saldo do mês anterior com a quantidade de rendimento, mais o novo montante investido menos a quantidade retirada e sua taxa:}
+
+$ P[i] = ((rp/100)+1)*P[i-1] + invP[i] - ((tp/100)+1)*retP[i-1])$ $\forall i \in \{2,..,13\}$\\
+
+
+\textbf{O saldo inicial do CDB é a quantidade investida:}
+
+$ CDB[0] = invCDB[0] $
+
+\textbf{O resto é o saldo do mês anterior com a quantidade de rendimento, mais o novo montante investido menos a quantidade retirada e sua taxa:}
+
+$ CDB[i] = ((rb[i-1]/100)+1)*CDB[i-1] + invCDB[i] - ((tb/100)+1)*retCDB[i-1]$ $\forall i \in \{2,..,13\}$\\
+
+
+\textbf{O saldo inicial em ações é a quantidade investida:}
+
+$ AC[0] = invAC[0] $
+
+\textbf{O resto é o saldo do mês anterior com a quantidade de rendimento, mais o novo montante investido menos a quantidade retirada:}
+
+$ AC[i] = ((ra[i-1]/100)+1)*AC[i-1] + invAC[i] - retAC[i-1]$ $\forall i \in \{2,..,13\}$\\
+
+
+\textbf{A quantidade retirada dos fundos de investimento no mês $i+1$ (mais a taxa de retiro no caso da poupança e do CDB) têm que ser menores ou iguais ao saldo atual do mês $i$ mais o rendimento equivalente a este mês:}
+
+$ retP[i]*((tp/100)+1) \leq ((rp/100)+1)*P[i]$ $\forall i \in \{1,..,12\}$
+
+$ retCDB[i]*((tb/100)+1) \leq ((rb[i]/100)+1)*CDB[i]$ $\forall i \in \{1,..,12\}$
+
+$ retAC[i] \leq ((ra[i]/100)+1)*AC[i]$ $\forall i \in \{1,..,12\}$\\
+
+
+\textbf{A quantidade investida no primeiro mês tem que ser menor ou igual que o dinheiro disponível (toda a herança menos a taxa do mês):}
+
+$ invP[0] + invCDB[0] + invAC[0] \leq h - d[0] $
+
+\textbf{Nos outros meses a quantidade investida tem que ser menor ou igual ao saldo da conta corrente mais a quantidade retirada dos fundos de investimento e menos as taxas:}
+
+$ invP[i] + invCDB[i] + invAC[i] \leq CC[i-1] + retP[i-1] + retCDB[i-1] + retAC[i-1] - c - d[i]$ $\forall i \in \{2,..,12\}$\\
+
+
+\textbf{Aqui temos os limites inferiores de todas as variáveis menos x, e todas obviamente tem limite inferior $0$:}
+
+$ CC[i],P[i],CDB[i],AC[i] \geq 0$ $\forall i \in \{1,...,13\} $
+
+$ invP[i],invCDB[i],invAC[i],retP[i],retCDB[i],retAC[i] \geq 0$ $\forall i \in \{1,...,12\} $\\\\
+
+
+\section{Resultados:}
+
+Os resultados do laboratório apresentam os valores ótimos esperados, mas a resolução (quantidades investidas e retiradas ao longo dos meses) diferem dos testes em alguns casos.\\\\
+Nos testes 7 e 8 houveram problemas pequenos de aproximação em dois casos ($\approx 0.02$ dinheiros).
+
+\end{document}

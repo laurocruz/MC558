@@ -1,0 +1,178 @@
+MC558A - Projeto e Análise de Algoritmos II
+
+Lehilton Pedrosa
+Murilo de Lima (PED C)
+Exercício de Programação VI
+
+    Prazo de submissão: 23 de junho às 23:59:59
+    O exercício deve ser implementado somente em C++
+    Número máximo de submissões: 10
+
+Pós-Dinheiro Líquido
+
+Você descobriu que vai receber a herança de uma tia rica no dia 5 de janeiro de 2018. Você decidiu que a partir dessa data vai ser uma pessoa improdutiva e viver de ganhos financeiros.
+
+Você terá direito a uma conta-corrente e a três tipos de investimento: poupança, CDB e ações. Inicialmente sua conta e seus investimentos têm saldo zero. Nesse dia, a herança será depositada em sua conta-corrente.
+
+Você só poderá movimentar sua conta e seus investimentos no dia 5 de cada mês. Você pagará uma tarifa fixa por mês para manter sua conta-corrente, e terá direito a pagamentos e transferências ilimitados. Se o dinheiro ficar parado na sua conta-corrente, ele não rende. A tarifa é cobrada sempre no dia 5 de cada mês, a partir do momento em que a conta completar um mês de uso.
+
+A poupança tem um rendimento fixo por mês, que é proporcional ao valor atualmente depositado. Por exemplo, se a taxa de rendimento for 1% ao mês e no final do dia 5 de janeiro havia 100 dinheiros na sua poupança, no dia 5 de fevereiro você terá 101 dinheiros. No entanto, você paga uma taxa para retirar dinheiro da sua poupança, que é proporcional ao valor retirado, e esse valor é descontado da sua poupança. Por exemplo, supondo que a taxa de retirada é de 2%, se você tem 101 dinheiros na poupança e transfere 50 dinheiros para a conta-corrente, você fica com 50 dinheiros na sua poupança imediatamente após a transferência.
+
+O CDB tem uma taxa de rendimento que varia a cada mês, mas o banco garante que a taxa sempre será maior que zero. O CDB também tem uma taxa fixa para retiradas, proporcional ao valor retirado.
+
+O investimento em ações tem taxa de rendimento mensal variável, que pode ser positiva ou negativa. Isto é, se você tinha 100 dinheiros investidos em ações no final do dia 5 de janeiro e o rendimento foi de 10%, no dia 5 de fevereiro você terá 110 dinheiros na sua conta de ações. Por outro lado, se ao final do dia 5 de junho você tinha 100 dinheiros investidos em ações e o rendimento foi de -5%, no dia 5 de julho você terá 95 dinheiros. A taxa de rendimento das ações sempre será maior que -100%. O investimento em ações não tem taxa de retirada.
+
+Além disso, você terá uma despesa mensal variável. Essa despesa deverá ser paga integralmente na sua conta-corrente.
+
+Como você vive num país de economia liberal sem planos de mitigar a desigualdade social, você não precisará se preocupar com imposto de renda progressivo ou imposto sobre fortunas.
+
+Não existe valor mínimo para investir. Os valores retirados dos investimentos são creditados sempre na sua conta-corrente.
+
+Você não pode deixar nenhuma de suas contas negativas. Por exemplo, você só pode retirar um valor da poupança se houver saldo suficiente para cobrir o valor retirado e a taxa de retirada correspondente.
+
+Seu objetivo é fazer um planejamento dos seus investimentos para o ano de 2018, de forma a ter o máximo de dinheiro possível (somando o saldo da conta-corrente e os saldos dos investimentos) ao final do dia 5 de janeiro de 2019. Para isso, você irá utilizar seus conhecimentos de programação linear.
+Você deve obrigatoriamente modelar o problema como um programa linear e utilizar o Lemon + GLPK para resolvê-lo.
+(Na aula do dia 13/06 será dada uma visão geral sobre o Lemon. Os slides utilizados estão disponíveis aqui. Um exercício extra para praticar o uso do Lemon pode ser encontrado aqui.)
+
+Atenção! Para este exercício, o SuSy não irá corrigir seu código automaticamente, uma vez que não possui suporte ao Lemon. Você irá submeter seu código, que será compilado e testado pelo monitor fora do SuSy após o prazo final das submissões. Seu código deve estar num arquivo chamado lab6.cpp. Todos os casos de teste são abertos, então sugerimos que você teste todos os casos antes de submeter sua solução final. Os testes estão disponíveis aqui.
+
+Relatório: além do código, você deve submeter um relatório de uma página em formato PDF, com o nome relatorio.pdf. Você pode escrever à mão e escanear ou utilizar algum editor de texto. No relatório você deve explicar seu programa linear e argumentar por que ele resolve o problema do enunciado. Não é necessário fazer prova formal nem fazer análise de complexidade.
+Sugestão: escreva o relatório antes de implementar o código; isso vai te ajudar a pensar melhor no problema. Após concluir a implementação, revise o relatório para checar se algo precisa ser modificado.
+
+Entrada: na primeira linha da entrada é dado um inteiro n, que indica o número de casos de teste.
+Para cada caso de teste, são dadas quatro linhas.
+Na primeira linha, são dados 5 números de ponto flutuante não-negativos h, c, rp, tp e tb, onde h é o valor da herança recebida, c é a tarifa mensal da conta-corrente, a taxa de rendimento mensal da poupança é rp %, a taxa de retirada da poupança é tp % e a taxa de retirada do CDB é tb %.
+Na segunda linha, são dados 12 números de ponto flutuante não-negativos rb1, ..., rb12, onde a taxa de redimento mensal do CDB do mês i para o mês i+1 é rbi %.
+Na terceira linha, são dados 12 números de ponto flutuante ra1, ..., ra12, onde a taxa de rendimento mensal das ações do mês i para o mês i+1 é rai %. Você pode supor que rai > -100.
+Na quarta linha são dados 12 números de ponto flutuante não-negativos d1, ..., d12, onde di é a despesa a ser paga no dia 5 do mês i. Não é dado o valor das despesas a serem pagas em 5 de janeiro de 2019.
+
+Saída: para cada caso de teste j = 1, ..., n, você deve imprimir uma linha no formato
+Caso j:
+Em seguida, se não houver solução possível ou limitada para o problema, você deve imprimir o seguinte:
+Solucao impossivel ou ilimitada
+Caso contrário, para i = 1, ..., 12, você deve imprimir o seguinte:
+Mes i/2018:
+investir na poupanca api dinheiros
+retirar da poupanca spi dinheiros
+investir no CDB abi dinheiros
+retirar do CDB sbi dinheiros
+investir nas acoes aai dinheiros
+retirar das acoes sai dinheiros
+Os números api, spi, abi, sbi, aai e sai devem ser impressos em ponto flutuante com 2 casas decimais.
+Em seguida, deve ser impresso o seguinte:
+Mes 1/2019:
+retirar da poupanca sp13 dinheiros
+retirar do CDB sb13 dinheiros
+retirar das acoes sa13 dinheiros
+saldo da heranca em 2019: hf dinheiros
+Os números sp13, sb13, sa13 e hf também devem ser impressos em ponto flutuante com 2 casas decimais.
+Note que pode haver mais de uma solução com o mesmo valor; qualquer solução ótima estará correta.
+Exemplo:
+Entrada:
+1
+100000.00 12.00 0.8 1.0 5.0
+1.2 0.1 0.9 0.4 2.0 1.5 0.5 3.5 4.0 3.0 8.1 1.5
+4.3 -20.0 32.0 15.0 135.0 -70.0 13.0 2.1 50.0 -5.5 15.0 0.0
+3200.00 3450.00 2800.00 3495.45 2452.56 4164.65 1234.34 6253.34 1346.34 1341.34 5414.32 1514.00
+
+Saída:
+Caso 1:
+Mes 1/2018:
+investir na poupanca 0.00 dinheiros
+retirar da poupanca 0.00 dinheiros
+investir no CDB 0.00 dinheiros
+retirar do CDB 0.00 dinheiros
+investir nas acoes 96800.00 dinheiros
+retirar das acoes 0.00 dinheiros
+Mes 2/2018:
+investir na poupanca 0.00 dinheiros
+retirar da poupanca 0.00 dinheiros
+investir no CDB 0.00 dinheiros
+retirar do CDB 0.00 dinheiros
+investir nas acoes 0.00 dinheiros
+retirar das acoes 100962.40 dinheiros
+Mes 3/2018:
+investir na poupanca 0.00 dinheiros
+retirar da poupanca 0.00 dinheiros
+investir no CDB 0.00 dinheiros
+retirar do CDB 0.00 dinheiros
+investir nas acoes 94688.40 dinheiros
+retirar das acoes 0.00 dinheiros
+Mes 4/2018:
+investir na poupanca 0.00 dinheiros
+retirar da poupanca 0.00 dinheiros
+investir no CDB 0.00 dinheiros
+retirar do CDB 0.00 dinheiros
+investir nas acoes 0.00 dinheiros
+retirar das acoes 3507.45 dinheiros
+Mes 5/2018:
+investir na poupanca 0.00 dinheiros
+retirar da poupanca 0.00 dinheiros
+investir no CDB 0.00 dinheiros
+retirar do CDB 0.00 dinheiros
+investir nas acoes 0.00 dinheiros
+retirar das acoes 2464.56 dinheiros
+Mes 6/2018:
+investir na poupanca 0.00 dinheiros
+retirar da poupanca 0.00 dinheiros
+investir no CDB 0.00 dinheiros
+retirar do CDB 0.00 dinheiros
+investir nas acoes 0.00 dinheiros
+retirar das acoes 322511.33 dinheiros
+Mes 7/2018:
+investir na poupanca 0.00 dinheiros
+retirar da poupanca 0.00 dinheiros
+investir no CDB 0.00 dinheiros
+retirar do CDB 0.00 dinheiros
+investir nas acoes 317088.34 dinheiros
+retirar das acoes 0.00 dinheiros
+Mes 8/2018:
+investir na poupanca 0.00 dinheiros
+retirar da poupanca 0.00 dinheiros
+investir no CDB 0.00 dinheiros
+retirar do CDB 0.00 dinheiros
+investir nas acoes 0.00 dinheiros
+retirar das acoes 6265.34 dinheiros
+Mes 9/2018:
+investir na poupanca 0.00 dinheiros
+retirar da poupanca 0.00 dinheiros
+investir no CDB 0.00 dinheiros
+retirar do CDB 0.00 dinheiros
+investir nas acoes 0.00 dinheiros
+retirar das acoes 1358.34 dinheiros
+Mes 10/2018:
+investir na poupanca 0.00 dinheiros
+retirar da poupanca 0.00 dinheiros
+investir no CDB 0.00 dinheiros
+retirar do CDB 0.00 dinheiros
+investir nas acoes 0.00 dinheiros
+retirar das acoes 537118.62 dinheiros
+Mes 11/2018:
+investir na poupanca 0.00 dinheiros
+retirar da poupanca 0.00 dinheiros
+investir no CDB 0.00 dinheiros
+retirar do CDB 0.00 dinheiros
+investir nas acoes 530338.96 dinheiros
+retirar das acoes 0.00 dinheiros
+Mes 12/2018:
+investir na poupanca 0.00 dinheiros
+retirar da poupanca 0.00 dinheiros
+investir no CDB 608351.80 dinheiros
+retirar do CDB 0.00 dinheiros
+investir nas acoes 0.00 dinheiros
+retirar das acoes 609889.80 dinheiros
+Mes 1/2019:
+retirar da poupanca 0.00 dinheiros
+retirar do CDB 0.00 dinheiros
+retirar das acoes 0.00 dinheiros
+saldo da heranca em 2019: 617477.08 dinheiros
+
+Observações:
+
+    Serão utilizadas as seguintes flags para compilação: -std=c++11 -pedantic -Wall -lm -lemon -lglpk
+    A nota do exercício depende do número de casos de teste que você acertar; são dados 10 casos abertos, valendo 0,7 ponto cada. Além disso, o relatório vale 3 pontos.
+    Para este laboratório não existe restrição de complexidade de memória nem de tempo.
+    Além da biblioteca Lemon, você pode utilizar as bibliotecas-padrão do C e as estruturas de dados da biblioteca-padrão do C++.
+    Trechos de código copiados da Internet ou dx coleguinha configuram plágio.
+    Seu código deve estar identado, modularizado e bem comentado. Identifique-se e deixe claro quais estruturas de dados e algoritmos foram utilizados.
+
